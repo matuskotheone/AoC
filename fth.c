@@ -13,6 +13,7 @@ col_t;
 
 typedef struct Board {
     col_t col[5][5];
+    bool won;
 }
 board_t;
 
@@ -26,6 +27,7 @@ board_t* board_ctor()
             new->col[i][j].marked = false;
         }
     }
+    new->won = false;
     return new;
 }
 
@@ -137,6 +139,7 @@ int winValue(board_t* board, int x)
 
 int run (board_t** arr, int num_boards, int *nums, int num_nums)
 {
+    int n = num_boards;
     for (int i = 0; i < num_nums; i++)
     {
         for (int j = 0; j < num_boards; j++)
@@ -148,16 +151,23 @@ int run (board_t** arr, int num_boards, int *nums, int num_nums)
                     if (nums[i] == arr[j]->col[k][l].num)
                     {
                         arr[j]->col[k][l].marked = true;
-                        if (win(arr[j], k, l))
+                        if (win(arr[j], k, l) && !arr[j]->won)
                         {
+                            arr[j]->won = true;
+                            printBoard(arr[j]);
+                            printf("%d\n", n);
+                            puts(" ");
+                            n--;
+                            if (n == 0)
+                            {
+                                return winValue(arr[j], nums[i]);
+                            }
                             //printf("%d\n", j);
-                            return winValue(arr[j], nums[i]);
                         }
                     }
                 }
             }
         }
-        
     }
 
     return 0;
