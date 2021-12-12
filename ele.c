@@ -29,7 +29,7 @@ int flash(int matrix[10][10], int flashed[10][10], int first)
         }
     }
 
-jump:
+changed:
     found = 0;
     for (int i = 0; i < 10; i++)
     {
@@ -70,7 +70,7 @@ jump:
         }
         if (found)
         {
-            goto jump;
+            goto changed;
         }
     }
     return sum;
